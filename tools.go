@@ -169,7 +169,7 @@ func (t *Tools) CreateDirIfNotExist(path string) error {
 func (t *Tools) Slugify(s string) (string, error) {
 
 	if s == "" {
-		errors.New("empty string not allowed")
+		return "", errors.New("empty string not allowed")
 	}
 
 	re := regexp.MustCompile(`[^a-z\d]+`)
