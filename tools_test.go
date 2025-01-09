@@ -21,10 +21,10 @@ func TestTools_RandomString(t *testing.T) {
 	}
 }
 
-var uploadTests = []struct{
-	name string
-	allowedTypes []string
-	renameFile bool
+var uploadTests = []struct {
+	name          string
+	allowedTypes  []string
+	renameFile    bool
 	errorExpected bool
 }{
 	{name: "allowed no rename", allowedTypes: []string{"image/jpeg", "image/png"}, renameFile: false, errorExpected: false},
@@ -33,7 +33,7 @@ var uploadTests = []struct{
 }
 
 func TestTools_UploadFiles(t *testing.T) {
-	for _, e := range uploadTests{
+	for _, e := range uploadTests {
 		// set up a pipe to avoid buffering
 		pr, pw := io.Pipe()
 		writer := multipart.NewWriter(pw)
@@ -76,7 +76,7 @@ func TestTools_UploadFiles(t *testing.T) {
 		testTools.AllowedFileTypes = e.allowedTypes
 
 		uploadedFiles, err := testTools.UploadFiles(request, "./testdata/uploads/", e.renameFile)
-		if err != nil  && !e.errorExpected {
+		if err != nil && !e.errorExpected {
 			t.Error(err)
 		}
 
@@ -85,7 +85,7 @@ func TestTools_UploadFiles(t *testing.T) {
 				t.Errorf("%s: expected file to exist: %s", e.name, err.Error())
 			}
 
-			// clean up 
+			// clean up
 			_ = os.Remove(fmt.Sprintf("./testdata/uploads/%s", uploadedFiles[0].NewFileName))
 		}
 
@@ -140,11 +140,25 @@ func TestTools_UploadOneFile(t *testing.T) {
 		t.Error(err)
 	}
 
-
 	if _, err := os.Stat(fmt.Sprintf("./testdata/uploads/%s", uploadedFiles.NewFileName)); os.IsNotExist(err) {
 		t.Errorf("expected file to exist: %s", err.Error())
 	}
 
-	// clean up 
+	// clean up
 	_ = os.Remove(fmt.Sprintf("./testdata/uploads/%s", uploadedFiles.NewFileName))
+}
+
+func TestTools_CreateDirIfNotExist(t *testing.T) {
+	var testTool Tools
+
+	err := testTool.CreateDirIfNotExist("./testdata/myDir")
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = testTool.CreateDirIfNotExist("./testdata/myDir")
+	if err != nil {
+		t.Error(err)
+	}
+	_ = os.Remove("./testdata/myDir")
 }
