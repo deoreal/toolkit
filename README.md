@@ -2,7 +2,8 @@
 
 A simple example of how to create a reusable Go module with commonly used tools.
 This toolbox is part of a Go lecture from Trevor Sawler - see github.com/tsawler/toolbox
-Allo Kudos go to Trevor!
+
+All Kudos go to Trevor!
 
 The included tools are:
 
