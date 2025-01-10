@@ -11,7 +11,7 @@ The included tools are:
 - [ ] Write JSON
 - [ ] Produce a JSON encoded error response
 - [X] Upload a file to a specified directory
-- [ ] Download a static file
+- [X] Download a static file
 - [X] Get a random string of length n
 - [ ] Post JSON to a remote service 
 - [X] Create a directory, including all parent directories, if it does not already exist
