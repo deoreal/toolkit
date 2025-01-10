@@ -256,18 +256,30 @@ var jsonTests = []struct {
 	maxSize            int
 	allowUnknownFields bool
 }{
-	{name: "valid json", json: `{"foo": "bar"}`, errorExpected: false, maxSize: 1024, allowUnknownFields: false},
-	{name: "bad format", json: `{"foo": }`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
-	{name: "incorrect type", json: `{"foo": 10}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
-	{name: "two json files", json: `{"foo": "bar"}{"second","file"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
-	{name: "file too big", json: `{"foo": "bar"}`, errorExpected: true, maxSize: 1, allowUnknownFields: false},
-	{name: "syntax error", json: `{"foo": ttt"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
-	{name: "empty json", json: `{"":""}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
-	{name: "invalid field", json: `{"": "bar"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
-	{name: "unknown field but not allowed ", json: `{"fooo": "bar"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
-	{name: "unknown field allowed but error", json: `{"fooo": "bar"}`, errorExpected: false, maxSize: 1024, allowUnknownFields: true},
-	{name: "missing field name", json: `{fooo: "bar"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
-	{name: "not json", json: `Hello gorgeous`, errorExpected: true, maxSize: 1024, allowUnknownFields: true},
+	// {name: "valid json", json: `{"foo": "bar"}`, errorExpected: false, maxSize: 1024, allowUnknownFields: false},
+	// {name: "bad format", json: `{"foo": }`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	// {name: "incorrect type", json: `{"foo": 10}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	// {name: "two json files", json: `{"foo": "bar"}{"second","file"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	// {name: "file too big", json: `{"foo": "bar"}`, errorExpected: true, maxSize: 1, allowUnknownFields: false},
+	// {name: "syntax error", json: `{"foo": ttt"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	// {name: "empty json", json: `{"":""}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	// {name: "invalid field", json: `{"": "bar"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	// {name: "unknown field but not allowed ", json: `{"fooo": "bar"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	// {name: "unknown field allowed but error", json: `{"fooo": "bar"}`, errorExpected: false, maxSize: 1024, allowUnknownFields: true},
+	// {name: "missing field name", json: `{fooo: "bar"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	// {name: "not json", json: `Hello gorgeous`, errorExpected: true, maxSize: 1024, allowUnknownFields: true},
+
+	{name: "good json", json: `{"foo": "bar"}`, errorExpected: false, maxSize: 1024, allowUnknownFields: false},
+	{name: "badly formatted json", json: `{"foo":}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	{name: "incorrect type", json: `{"foo": 1}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	{name: "two json files", json: `{"foo": "1"}{"alpha": "beta"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	{name: "empty body", json: ``, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	{name: "syntax error in json", json: `{"foo": 1"`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	{name: "unknown field in json", json: `{"fooo": "1"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: false},
+	{name: "allow unknown fields in json", json: `{"fooo": "1"}`, errorExpected: false, maxSize: 1024, allowUnknownFields: true},
+	{name: "missing field name", json: `{jack: "1"}`, errorExpected: true, maxSize: 1024, allowUnknownFields: true},
+	{name: "file too large", json: `{"foo": "bar"}`, errorExpected: true, maxSize: 5, allowUnknownFields: true},
+	{name: "not json", json: `Hello, world!`, errorExpected: true, maxSize: 1024, allowUnknownFields: true},
 }
 
 func TestTools_ReadJSON(t *testing.T) {
